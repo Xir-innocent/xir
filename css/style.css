@@ -734,6 +734,142 @@ p {
     opacity: 0.9;
 }
 
+.principles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.principle {
+    background: var(--white);
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease;
+}
+
+.principle:hover {
+    transform: translateY(-8px);
+}
+
+.principle h4 {
+    color: var(--accent-purple);
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+}
+
+/* About Us Section */
+.about {
+    padding: 120px 0;
+}
+
+.about-intro {
+    font-size: 1.2rem;
+    max-width: 900px;
+    margin: 0 auto 4rem;
+    color: var(--dark-gray);
+    line-height: 1.8;
+    text-align: center;
+}
+
+.vision-mission-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 40px;
+    margin-bottom: 60px;
+}
+
+.vm-card {
+    background: var(--white);
+    padding: 50px 40px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    transition: transform 0.4s ease;
+}
+
+.vm-card:hover {
+    transform: translateY(-10px);
+}
+
+.vm-card h3 {
+    font-size: 2rem;
+    color: var(--primary-purple);
+    margin-bottom: 25px;
+    font-weight: 800;
+}
+
+.vm-card p {
+    font-size: 1.15rem;
+    color: var(--dark-gray);
+    line-height: 1.8;
+}
+
+/* Core Belief Quote */
+.core-belief {
+    margin-top: 80px;
+    text-align: center;
+}
+
+.core-belief blockquote {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--primary-purple);
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 50px 40px;
+    font-style: italic;
+    border-left: 6px solid var(--accent-purple);
+    background: rgba(75, 0, 130, 0.05);
+    border-radius: 15px;
+    line-height: 1.6;
+}
+
+.core-belief blockquote p {
+    margin: 0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+    .vision-mission-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .vm-card {
+        padding: 40px 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .about {
+        padding: 100px 0;
+    }
+    
+    .about-intro {
+        font-size: 1.1rem;
+        margin-bottom: 3rem;
+    }
+    
+    .vm-card h3 {
+        font-size: 1.8rem;
+    }
+    
+    .core-belief blockquote {
+        font-size: 1.5rem;
+        padding: 40px 30px;
+    }
+}
+
+@media (max-width: 576px) {
+    .core-belief blockquote {
+        font-size: 1.3rem;
+        padding: 30px 20px;
+    }
+}
+
 .counter {
     font-weight: 900;
 }
+
