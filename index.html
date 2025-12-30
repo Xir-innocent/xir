@@ -183,43 +183,62 @@
         </div>
     </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="projects section">
-        <div class="container">
-            <h2 class="section-title">Our Completed Projects</h2>
-            <p class="section-subtitle">See how we've powered homes and businesses across Nigeria</p>
-            <div class="projects-grid">
-                <!-- Repeat project cards as needed -->
-                <div class="project-card">
-                    <img src="images/project1.jpeg" alt="Residential Solar Installation">
+    <!-- Our Completed Projects (Carousel) -->
+<section id="projects" class="projects section">
+    <div class="container">
+        <h2 class="section-title">Our Completed Projects</h2>
+        <p class="section-subtitle">Delivering reliable power solutions across Nigeria</p>
+
+        <div class="projects-carousel">
+            <div class="carousel-track">
+                <!-- Project 1 -->
+                <div class="project-slide">
+                    <img src="images/project1.jpg" alt="Residential Solar Installation - Lagos">
                     <div class="project-info">
                         <h3>Residential Home - Lagos</h3>
-                        <p>10kW rooftop solar system</p>
+                        <p>10kW rooftop solar system with battery backup</p>
                         <span class="project-date">Completed: 2025</span>
                     </div>
                 </div>
-                <div class="project-card">
-                    <img src="images/project2.jpg" alt="Commercial Office Solar">
+                <!-- Project 2 -->
+                <div class="project-slide">
+                    <img src="images/project2.jpg" alt="Commercial Office Solar - Abuja">
                     <div class="project-info">
                         <h3>Office Complex - Abuja</h3>
                         <p>50kW hybrid solar solution</p>
                         <span class="project-date">Completed: 2025</span>
                     </div>
                 </div>
-                <div class="project-card">
-                    <img src="images/project3.jpg" alt="Custom Industrial Setup">
+                <!-- Project 3 -->
+                <div class="project-slide">
+                    <img src="images/project3.jpg" alt="Factory Solar System - Port Harcourt">
                     <div class="project-info">
-                        <h3>Factory - Port Harcourt</h3>
+                        <h3>Industrial Factory - Port Harcourt</h3>
                         <p>100kW ground-mounted system</p>
                         <span class="project-date">Completed: 2025</span>
                     </div>
                 </div>
+                <!-- Add more projects here as needed -->
+                <!-- Duplicate the first slide at the end for seamless loop (optional, but smooth) -->
             </div>
-            <div class="text-center">
-                <a href="#" class="btn-secondary">View All Projects</a>
-            </div>
+
+            <!-- Navigation Arrows -->
+            <button class="carousel-prev" aria-label="Previous project">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="carousel-next" aria-label="Next project">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+
+            <!-- Dot Indicators -->
+            <div class="carousel-dots"></div>
         </div>
-    </section>
+
+        <div class="text-center" style="margin-top: 40px;">
+            <a href="#contact" class="btn-primary">Get Your Custom Solution</a>
+        </div>
+    </div>
+</section>
 
     <section class="stats section bg-purple">
     <div class="container">
@@ -388,6 +407,7 @@
 </body>
 
 </html>
+
 
 
 
