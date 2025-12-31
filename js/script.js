@@ -283,3 +283,46 @@ let autoPlay = setInterval(nextSlide, 6000);
 // Pause on hover
 document.querySelector('.projects-carousel').addEventListener('mouseenter', () => clearInterval(autoPlay));
 document.querySelector('.projects-carousel').addEventListener('mouseleave', () => autoPlay = setInterval(nextSlide, 6000));
+
+// 3D Solutions Carousel
+const track3d = document.querySelector('.carousel-3d-track');
+const cards3d = Array.from(document.querySelectorAll('.solution-3d-card'));
+const prevBtn3d = document.querySelector('.carousel-3d-prev');
+const nextBtn3d = document.querySelector('.carousel-3d-next');
+const dotsContainer3d = document.querySelector('.carousel-3d-dots');
+
+let current3d = 0;
+const total3d = cards3d.length;
+
+cards3d.forEach((card, i) => {
+    const dot = document.createElement('span');
+    dot.classList.add('dot');
+    if (i === 0) dot.classList.add('active');
+    dot.addEventListener('click', () => goTo3d(i));
+    dotsContainer3d.appendChild(dot);
+});
+
+const dots3d = document.querySelectorAll('.carousel-3d-dots .dot');
+
+function update3dCarousel() {
+    cards3d.forEach((card, i) => {
+        card.classList.remove('active', 'prev', 'next');
+        if (i === current3d) card.classList.add('active');
+        else if (i === (current3d - 1 + total3d) % total3d) card.classList.add('prev');
+        else if (i === (current3d + 1) % total3d) card.classList.add('next');
+    });
+    dots3d.forEach((dot, i) => dot.classList.toggle('active', i === current3d));
+}
+
+function goTo3d(index) {
+    current3d = index;
+    update3dCarousel();
+}
+
+prevBtn3d.addEventListener('click', () => goTo3d((current3d - 1 + total3d) % total3d));
+nextBtn3d.addEventListener('click', () => goTo3d((current3d + 1) % total3d));
+
+// Auto-rotate (optional)
+setInterval(() => nextBtn3d.click(), 8000);
+
+update3dCarousel();
