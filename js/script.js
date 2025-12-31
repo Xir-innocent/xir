@@ -230,4 +230,56 @@ document.querySelectorAll('.counter').forEach(counter => {
         });
         obs.observe(counter);
     }
+
 });
+
+// Projects Carousel
+const track = document.querySelector('.carousel-track');
+const slides = Array.from(track.children);
+const nextButton = document.querySelector('.carousel-next');
+const prevButton = document.querySelector('.carousel-prev');
+const dotsContainer = document.querySelector('.carousel-dots');
+
+let currentIndex = 0;
+const totalSlides = slides.length;
+
+// Create dots
+slides.forEach((_, index) => {
+    const dot = document.createElement('span');
+    dot.classList.add('dot');
+    if (index === 0) dot.classList.add('active');
+    dot.addEventListener('click', () => goToSlide(index));
+    dotsContainer.appendChild(dot);
+});
+
+const dots = document.querySelectorAll('.dot');
+
+function updateCarousel() {
+    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === currentIndex));
+}
+
+function goToSlide(index) {
+    currentIndex = index;
+    updateCarousel();
+}
+
+function nextSlide() {
+    currentIndex = (currentIndex + 1) % totalSlides;
+    updateCarousel();
+}
+
+function prevSlide() {
+    currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+    updateCarousel();
+}
+
+nextButton.addEventListener('click', nextSlide);
+prevButton.addEventListener('click', prevSlide);
+
+// Auto-play
+let autoPlay = setInterval(nextSlide, 6000);
+
+// Pause on hover
+document.querySelector('.projects-carousel').addEventListener('mouseenter', () => clearInterval(autoPlay));
+document.querySelector('.projects-carousel').addEventListener('mouseleave', () => autoPlay = setInterval(nextSlide, 6000));
