@@ -326,66 +326,120 @@ nextBtn3d.addEventListener('click', () => goTo3d((current3d + 1) % total3d));
 setInterval(() => nextBtn3d.click(), 8000);
 
 update3dCarousel();
-// Advanced XIR Sizer Logic
+// ==================== ADVANCED XIR SIZER LOGIC ====================
+let currentProjectId = '';
+
+function generateProjectId() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const random = Math.floor(100 + Math.random() * 900);
+    return `XIR-${year}-${month}${random}`;
+}
+
+function loadSavedSession() {
+    const saved = localStorage.getItem('xirCurrentProject');
+    if (saved) {
+        const data = JSON.parse(saved);
+        currentProjectId = data.projectId || generateProjectId();
+        document.getElementById('project-id').value = currentProjectId;
+        
+        // Restore inputs
+        if (data.inputs) {
+            Object.keys(data.inputs).forEach(key => {
+                const el = document.getElementById(key);
+                if (el) el.value = data.inputs[key];
+            });
+        }
+    } else {
+        currentProjectId = generateProjectId();
+        document.getElementById('project-id').value = currentProjectId;
+    }
+}
+
+function saveSession(inputs, results) {
+    const sessionData = {
+        projectId: currentProjectId,
+        timestamp: new Date().toISOString(),
+        inputs: inputs,
+        results: results
+    };
+    localStorage.setItem('xirCurrentProject', JSON.stringify(sessionData));
+}
+
 function runXIRSizer() {
-    const location = document.getElementById('location').value || 'Lagos';
-    const dailyKwh = parseFloat(document.getElementById('daily-kwh').value) || 45;
-    const peakKw = parseFloat(document.getElementById('peak-kw').value) || 12;
-    const roofArea = parseFloat(document.getElementById('roof-area').value) || 120;
-    const systemType = document.getElementById('system-type').value;
+    // Get inputs
+    const inputs = {
+        projectId: document.getElementById('project-id').value,
+        location: document.getElementById('location').value || 'Lagos',
+        dailyKwh: parseFloat(document.getElementById('daily-kwh').value) || 45,
+        peakKw: parseFloat(document.getElementById('peak-kw').value) || 12,
+        roofArea: parseFloat(document.getElementById('roof-area').value) || 120,
+        shading: parseFloat(document.getElementById('shading').value) || 5,
+        autonomy: parseFloat(document.getElementById('autonomy').value) || 2,
+        systemType: document.getElementById('system-type').value
+    };
 
-    // Simple but realistic XIR precision calculation
-    const psH = 5.2; // Lagos average peak sun hours
-    const efficiency = 0.78; // Overall system efficiency
-    const optimalKwp = Math.round((dailyKwh / (psH * efficiency)) * 10) / 10;
+    // Improved XIR Precision Calculations (Lagos/Nigeria focused)
+    const psh = 5.2;                    // Average peak sun hours Lagos
+    const tempDerate = 0.88;            // Temperature & dust derating
+    const wiringLoss = 0.95;
+    const shadingLoss = (100 - inputs.shading) / 100;
+    const overallEff = 0.78 * shadingLoss * tempDerate * wiringLoss;
 
-    const resultsHTML = `
-        <div class="bg-emerald-50 border border-emerald-200 p-6 rounded-xl mb-6">
-            <p class="text-emerald-700 font-semibold">XIR OPTIMAL DESIGN — RELIABLE & COST EFFICIENT</p>
-            <p class="text-4xl font-bold text-emerald-700">${optimalKwp} kWp Hybrid System</p>
-            <p class="text-gray-700">${Math.round(optimalKwp * 1.82)} × 550W Panels • 10kW Inverter • ${Math.round(optimalKwp * 1.8)} kWh LiFePO4 Battery</p>
+    let arrayKwp = (inputs.dailyKwh / (psh * overallEff)) * 1.12; // 12% reliability buffer
+    arrayKwp = Math.round(arrayKwp * 10) / 10;                     // Round to 1 decimal
+
+    const inverterKw = Math.ceil(Math.max(arrayKwp * 1.25, inputs.peakKw) * 10) / 10;
+    const batteryKwh = Math.round(inputs.dailyKwh * inputs.autonomy * 1.15); // 15% extra for DoD/efficiency
+
+    const dailyYield = Math.round(arrayKwp * psh * overallEff);
+
+    // Three scenarios
+    const undersized = Math.round(arrayKwp * 0.65 * 10) / 10;
+    const oversized = Math.round(arrayKwp * 1.45 * 10) / 10;
+
+    const results = {
+        optimalKwp: arrayKwp,
+        inverterKw: inverterKw,
+        batteryKwh: batteryKwh,
+        dailyYield: dailyYield,
+        reliability: "97%"
+    };
+
+    // Build beautiful results HTML
+    let html = `
+        <div class="scenario-card optimal">
+            <h4>XIR Optimal Design</h4>
+            <p class="text-4xl font-bold text-emerald-700">${arrayKwp} kWp Hybrid System</p>
+            <p><strong>${Math.round(arrayKwp * 1.82)} × 550W Panels</strong> • ${inverterKw}kW Inverter • ${batteryKwh}kWh LiFePO4</p>
+            <p class="mt-3"><strong>Daily Yield:</strong> ${dailyYield} kWh | <strong>Reliability:</strong> ${results.reliability}</p>
         </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Scenario</th>
-                    <th>System Size</th>
-                    <th>Est. Cost</th>
-                    <th>Daily Yield</th>
-                    <th>Risk Level</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Undersized (Poor Design)</td>
-                    <td>${(optimalKwp * 0.65).toFixed(1)} kWp</td>
-                    <td>₦${Math.round(optimalKwp * 0.65 * 1.5)}M</td>
-                    <td>${Math.round(dailyKwh * 0.55)} kWh</td>
-                    <td class="text-red-600">High failure risk</td>
-                </tr>
-                <tr class="optimal-row">
-                    <td><strong>XIR Optimal</strong></td>
-                    <td><strong>${optimalKwp} kWp</strong></td>
-                    <td><strong>₦${Math.round(optimalKwp * 1.55)}M</strong></td>
-                    <td><strong>${Math.round(dailyKwh * 0.85)} kWh</strong></td>
-                    <td class="text-emerald-600">Balanced & Reliable</td>
-                </tr>
-                <tr>
-                    <td>Oversized (Over-design)</td>
-                    <td>${(optimalKwp * 1.45).toFixed(1)} kWp</td>
-                    <td>₦${Math.round(optimalKwp * 1.45 * 1.6)}M</td>
-                    <td>${Math.round(dailyKwh * 1.25)} kWh</td>
-                    <td class="text-red-600">Unnecessary high cost</td>
-                </tr>
-            </tbody>
-        </table>
+        <h4 class="mt-8 mb-4">Comparison — Why XIR Optimal is Best</h4>
+        <div class="scenario-card undersized">
+            <strong>Undersized (Poor Design):</strong> ${undersized} kWp → High failure risk during peak/rainy season
+        </div>
+        <div class="scenario-card optimal">
+            <strong>XIR Optimal:</strong> ${arrayKwp} kWp → Balanced reliability + cost efficiency
+        </div>
+        <div class="scenario-card oversized">
+            <strong>Oversized (Over-design):</strong> ${oversized} kWp → Unnecessarily expensive
+        </div>
 
-        <div class="mt-8 text-center text-sm text-gray-500">
-            Project saved • Ready for document generation • Nationwide delivery available
+        <div class="mt-8 p-5 bg-purple-50 rounded-xl text-sm">
+            <strong>Why this is XIR Optimal:</strong> We added a controlled 12% reliability buffer while staying under 120% of minimum size. This avoids both system failure and wasteful over-spending.
         </div>
     `;
 
-    document.getElementById('results-content').innerHTML = resultsHTML;
+    document.getElementById('results-content').innerHTML = html;
     document.getElementById('sizer-results').classList.remove('hidden');
+
+    // Save session
+    saveSession(inputs, results);
 }
+
+// Load saved session when page loads
+window.addEventListener('load', () => {
+    loadSavedSession();
+});
