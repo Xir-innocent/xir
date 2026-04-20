@@ -326,3 +326,66 @@ nextBtn3d.addEventListener('click', () => goTo3d((current3d + 1) % total3d));
 setInterval(() => nextBtn3d.click(), 8000);
 
 update3dCarousel();
+// Advanced XIR Sizer Logic
+function runXIRSizer() {
+    const location = document.getElementById('location').value || 'Lagos';
+    const dailyKwh = parseFloat(document.getElementById('daily-kwh').value) || 45;
+    const peakKw = parseFloat(document.getElementById('peak-kw').value) || 12;
+    const roofArea = parseFloat(document.getElementById('roof-area').value) || 120;
+    const systemType = document.getElementById('system-type').value;
+
+    // Simple but realistic XIR precision calculation
+    const psH = 5.2; // Lagos average peak sun hours
+    const efficiency = 0.78; // Overall system efficiency
+    const optimalKwp = Math.round((dailyKwh / (psH * efficiency)) * 10) / 10;
+
+    const resultsHTML = `
+        <div class="bg-emerald-50 border border-emerald-200 p-6 rounded-xl mb-6">
+            <p class="text-emerald-700 font-semibold">XIR OPTIMAL DESIGN — RELIABLE & COST EFFICIENT</p>
+            <p class="text-4xl font-bold text-emerald-700">${optimalKwp} kWp Hybrid System</p>
+            <p class="text-gray-700">${Math.round(optimalKwp * 1.82)} × 550W Panels • 10kW Inverter • ${Math.round(optimalKwp * 1.8)} kWh LiFePO4 Battery</p>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Scenario</th>
+                    <th>System Size</th>
+                    <th>Est. Cost</th>
+                    <th>Daily Yield</th>
+                    <th>Risk Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Undersized (Poor Design)</td>
+                    <td>${(optimalKwp * 0.65).toFixed(1)} kWp</td>
+                    <td>₦${Math.round(optimalKwp * 0.65 * 1.5)}M</td>
+                    <td>${Math.round(dailyKwh * 0.55)} kWh</td>
+                    <td class="text-red-600">High failure risk</td>
+                </tr>
+                <tr class="optimal-row">
+                    <td><strong>XIR Optimal</strong></td>
+                    <td><strong>${optimalKwp} kWp</strong></td>
+                    <td><strong>₦${Math.round(optimalKwp * 1.55)}M</strong></td>
+                    <td><strong>${Math.round(dailyKwh * 0.85)} kWh</strong></td>
+                    <td class="text-emerald-600">Balanced & Reliable</td>
+                </tr>
+                <tr>
+                    <td>Oversized (Over-design)</td>
+                    <td>${(optimalKwp * 1.45).toFixed(1)} kWp</td>
+                    <td>₦${Math.round(optimalKwp * 1.45 * 1.6)}M</td>
+                    <td>${Math.round(dailyKwh * 1.25)} kWh</td>
+                    <td class="text-red-600">Unnecessary high cost</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="mt-8 text-center text-sm text-gray-500">
+            Project saved • Ready for document generation • Nationwide delivery available
+        </div>
+    `;
+
+    document.getElementById('results-content').innerHTML = resultsHTML;
+    document.getElementById('sizer-results').classList.remove('hidden');
+}
