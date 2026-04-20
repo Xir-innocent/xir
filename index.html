@@ -279,40 +279,64 @@
     </div>
 </section>
 
-    <!-- Solar Calculator Section -->
-    <section id="calculator" class="calculator section">
-        <div class="container">
-            <h2 class="section-title">Solar Savings Calculator</h2>
-            <p class="section-subtitle">Estimate your potential savings and system size</p>
-            <div class="calculator-form">
-                <form id="solarCalculator">
+    <!-- Advanced XIR Solar System Sizer -->
+<section id="calculator" class="calculator section">
+    <div class="container">
+        <h2 class="section-title">Advanced XIR Solar System Sizer</h2>
+        <p class="section-subtitle">Precision engineering that bridges poor design and over-design • Reliable • Scalable • Cost Efficient</p>
+        
+        <div class="sizer-wrapper">
+            <!-- Input Form -->
+            <div class="sizer-input-card">
+                <h3 class="mb-6">1. Enter Client Load & Energy Data</h3>
+                
+                <div class="form-grid">
                     <div class="form-group">
-                        <label for="bill">Average Monthly Electricity Bill (₦)</label>
-                        <input type="number" id="bill" placeholder="e.g. 50000" required>
+                        <label for="location">Location (City)</label>
+                        <input type="text" id="location" value="Lagos" class="sizer-input">
                     </div>
                     <div class="form-group">
-                        <label for="location">Location / State</label>
-                        <select id="location">
-                            <option value="lagos">Lagos</option>
-                            <option value="abuja">Abuja</option>
-                            <option value="ph">Port Harcourt</option>
-                            <option value="other">Other</option>
+                        <label for="daily-kwh">Daily Energy Consumption (kWh)</label>
+                        <input type="number" id="daily-kwh" value="45" class="sizer-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="peak-kw">Peak Load (kW)</label>
+                        <input type="number" id="peak-kw" value="12" class="sizer-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="roof-area">Available Roof Area (m²)</label>
+                        <input type="number" id="roof-area" value="120" class="sizer-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="system-type">System Type</label>
+                        <select id="system-type" class="sizer-input">
+                            <option value="Hybrid">Hybrid (Recommended)</option>
+                            <option value="Grid-tied">Grid-tied</option>
+                            <option value="Off-grid">Off-grid</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="type">Property Type</label>
-                        <select id="type">
-                            <option value="home">Residential Home</option>
-                            <option value="business">Business / Office</option>
-                            <option value="custom">Custom / Industrial</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn-primary">Calculate Savings</button>
-                </form>
-                <div id="calculatorResult" class="result-box" style="display:none;"></div>
+                </div>
+
+                <button onclick="runXIRSizer()" class="btn-primary w-full mt-8 py-4 text-lg">
+                    <i class="fas fa-bolt"></i> Run Advanced XIR Sizer
+                </button>
+            </div>
+
+            <!-- Results Panel -->
+            <div id="sizer-results" class="sizer-results-card hidden">
+                <h3 class="mb-6 flex items-center gap-3">
+                    XIR Optimal System Design 
+                    <span class="text-yellow-400 text-3xl">⚡</span>
+                </h3>
+                <div id="results-content"></div>
             </div>
         </div>
-    </section>
+
+        <p class="text-center mt-10 text-sm text-gray-500">
+            All calculations follow XIR precision rules • Data is saved for this session
+        </p>
+    </div>
+</section>
 
     <!-- Q&A / FAQ + Contact Form -->
     <section id="faq" class="faq-contact section bg-light">
