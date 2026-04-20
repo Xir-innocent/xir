@@ -279,18 +279,22 @@
     </div>
 </section>
 
-    <!-- Advanced XIR Solar System Sizer -->
+    <!-- Advanced XIR Solar System Sizer - Improved Version -->
 <section id="calculator" class="calculator section">
     <div class="container">
         <h2 class="section-title">Advanced XIR Solar System Sizer</h2>
-        <p class="section-subtitle">Precision engineering that bridges poor design and over-design • Reliable • Scalable • Cost Efficient</p>
+        <p class="section-subtitle">Precision engineering for reliability without over-design • Powering Progress</p>
         
         <div class="sizer-wrapper">
             <!-- Input Form -->
             <div class="sizer-input-card">
-                <h3 class="mb-6">1. Enter Client Load & Energy Data</h3>
+                <h3 class="mb-6">1. Client Load & Energy Input</h3>
                 
                 <div class="form-grid">
+                    <div class="form-group">
+                        <label for="project-id">Project ID (auto-generated)</label>
+                        <input type="text" id="project-id" readonly class="sizer-input bg-gray-100">
+                    </div>
                     <div class="form-group">
                         <label for="location">Location (City)</label>
                         <input type="text" id="location" value="Lagos" class="sizer-input">
@@ -308,6 +312,14 @@
                         <input type="number" id="roof-area" value="120" class="sizer-input">
                     </div>
                     <div class="form-group">
+                        <label for="shading">Shading Loss (%)</label>
+                        <input type="number" id="shading" value="5" class="sizer-input" min="0" max="30">
+                    </div>
+                    <div class="form-group">
+                        <label for="autonomy">Battery Autonomy (days) - Hybrid only</label>
+                        <input type="number" id="autonomy" value="2" class="sizer-input" min="1" max="5">
+                    </div>
+                    <div class="form-group">
                         <label for="system-type">System Type</label>
                         <select id="system-type" class="sizer-input">
                             <option value="Hybrid">Hybrid (Recommended)</option>
@@ -317,7 +329,7 @@
                     </div>
                 </div>
 
-                <button onclick="runXIRSizer()" class="btn-primary w-full mt-8 py-4 text-lg">
+                <button onclick="runXIRSizer()" class="btn-primary w-full mt-8 py-4 text-lg font-semibold">
                     <i class="fas fa-bolt"></i> Run Advanced XIR Sizer
                 </button>
             </div>
@@ -325,15 +337,14 @@
             <!-- Results Panel -->
             <div id="sizer-results" class="sizer-results-card hidden">
                 <h3 class="mb-6 flex items-center gap-3">
-                    XIR Optimal System Design 
-                    <span class="text-yellow-400 text-3xl">⚡</span>
+                    XIR Optimal System Design <span class="text-yellow-400 text-3xl">⚡</span>
                 </h3>
                 <div id="results-content"></div>
             </div>
         </div>
 
         <p class="text-center mt-10 text-sm text-gray-500">
-            All calculations follow XIR precision rules • Data is saved for this session
+            All calculations follow XIR precision rules • Session saved automatically
         </p>
     </div>
 </section>
